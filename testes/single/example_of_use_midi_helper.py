@@ -1,0 +1,15 @@
+from scripts.single.midi_helper import MidiHelper
+
+mh = MidiHelper()
+mh.put_note(name_note='kick', length='quarter', rest_time=0, volume='ff')
+mh.put_note(name_note='hi_close', length='quarter', rest_time=-mh.get_duration_last_note())
+mh.put_note(name_note='snare', length='quarter', rest_time=-mh.get_duration_last_note())
+mh.put_note(name_note='hi_close', length='quarter', rest_time=0)
+mh.put_note(name_note='snare', length='quarter', rest_time=-mh.get_duration_last_note())
+mh.put_note(name_note='hi_close', length='quarter', rest_time=0)
+mh.put_note(name_note='kick', length='quarter', rest_time=-mh.get_duration_last_note(), volume='ff')
+mh.put_note(name_note='hi_close', length='quarter', rest_time=0)
+mh.put_note(name_note='kick', length='quarter', rest_time=0, volume='ff')
+mh.put_note(name_note='kick', length='quarter', rest_time=0, volume='ff')
+mh.put_note(name_note='kick', length='quarter', rest_time=0, volume='ff')
+mh.save_midi("test")
