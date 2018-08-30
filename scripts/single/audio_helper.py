@@ -162,14 +162,19 @@ class Audio:
         self.__starts_stops=onsetFrames*hop_length*2
         return onsetFrames*hop_length*2
 
-    def splits_audio_and_return_notes(self):
-        info = [self.__frames[self.__starts_stops[i]:self.__starts_stops[i+1]]
-                for i in range(0, (len(self.__starts_stops)-1))]
-        print(info)
-        print(len(info))
-        for i in range(0, (len(self.__starts_stops)-1)):
 
-            print(self.recoginize_freq(info[i]+info[i]+info[]i))
+    def splits_audio_and_return_notes(self):
+        print(self.__frames)
+        print("test")
+        format_audio = pyaudio.paInt16
+        array = np.frombuffer(self.__frames, dtype=np.uint8)
+        #print(len(array))
+
+
+        for i in range(0, (len(self.__starts_stops)-1)):
+            note_test = array[self.__starts_stops[i]:self.__starts_stops[i+1]]
+            #print(note_test.tobytes())
+            print(self.get_name_note(self.recoginize_freq(b''.join(note_test),int(len(note_test)/2)))) 
 
     def get_peaks_in_s(self, frames=None):
         hop_length=512
@@ -193,15 +198,16 @@ class Audio:
         else:
             return self.__tempo
 
-    def recoginize_freq(self, frames=None):
+    def recoginize_freq(self, frames=None,chunk=None):
         thefreq = 0
         if frames is not None:
             self.__frames = frames
 
         seconds = self.__nframes/self.__framerate
         # Window of all sample
-
-        chunk = round(self.__framerate * seconds)
+        if chunk == None:
+            chunk = round(self.__framerate * seconds)
+        #print(chunk)
         ####print(chunk)
         # use a Blackman window
         window = np.blackman(chunk)
@@ -209,7 +215,7 @@ class Audio:
         p = pyaudio.PyAudio()
         data=self.__frames[0:chunk*self.__sampwidth]
         i=self.__sampwidth
-        print(frames)
+        #print(frames)
         while len(data) == chunk*self.__sampwidth:
             #print(str(len(data)) + " == " + str(chunk * self.__sampwidth))
             # unpack the data and times by the hamming window
@@ -233,7 +239,7 @@ class Audio:
                 break
         p.terminate()
         # print("end")
-       ### print("frex:"+str(thefreq))
+        #print("frex:"+str(thefreq))
         self.__freq = thefreq
         return thefreq
 
