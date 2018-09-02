@@ -1,7 +1,7 @@
 import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
+__version__ = '0.2'
 
 def make_folder(path, del_if_exist=False):
     try:

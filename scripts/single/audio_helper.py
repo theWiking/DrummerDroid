@@ -29,32 +29,37 @@ class Sample:
 
 
 class Audio:
-    __audio = None
-    __framerate = 44100
-    __name = None
-    __frames = None
-    __time = None
-    __npframe = None
-    __dict_freq = {'C': 32.7,
-                   'C#': 34.6,
-                   'D': 36.7,
-                   'D#': 38.9,
-                   'E': 41.2,
-                   'F': 43.7,
-                   'F#': 46.2,
-                   'G': 49.0,
-                   'G#': 51.9,
-                   'A': 55.0,
-                   'A#': 58.3,
-                   'B': 61.7}
+
 
     def __init__(self, name):
         self.__name = name
+        self.__array_notes = None
+        self.__audio = None
+        self.__framerate = 44100
+        self.__name = None
+        self.__frames = None
+        self.__time = None
+        self.__npframe = None
+        self.__freq = 0
+        self.__metrum = (4, 4)
+        self.__name_note = None
+        self.__dict_freq = {'C': 32.7,
+                       'C#': 34.6,
+                       'D': 36.7,
+                       'D#': 38.9,
+                       'E': 41.2,
+                       'F': 43.7,
+                       'F#': 46.2,
+                       'G': 49.0,
+                       'G#': 51.9,
+                       'A': 55.0,
+                       'A#': 58.3,
+                       'B': 61.7}
 
     def __del__(self):
         pass
 
-    def get_name_note(self, freq):
+    def get_name_note(self, freq=None):
         """
         note = dcp(self.__dict_freq)
         for key, value in note.items():
@@ -62,7 +67,14 @@ class Audio:
         sorted_d = sorted((value, key) for (key, value) in note.items())
         print(sorted_d)
         """
-        return librosa.hz_to_note(freq)
+        if freq == None:
+            freq = self.__freq
+        if freq != None:
+            self.__name_note = librosa.hz_to_note(freq)
+            print(self.__name_note)
+            return (''.join([i for i in self.__name_note if not i.isdigit()]))
+        else:
+            return '0'
 
     def get_name(self):
         return self.__name
@@ -108,7 +120,7 @@ class Audio:
             vol = max(data_chunk)
 
             if vol >= 250:
-                print("start recprd")
+                print("start record")
                 frames.append(data)
                 for i in range(0, int(rate / chunk * time_of_recording)):
                     data = stream.read(chunk)
@@ -121,10 +133,12 @@ class Audio:
         stream.close()
         self.__sampwidth = audio.get_sample_size(format_audio)
         self.__frames = b''.join(frames)
+
         self.__nframes = len(frames)/self.__sampwidth
         audio.terminate()
-
+        print(self.recoginize_freq(self.__frames))
         # writing to file
+        print(len(frames))
         return frames
 
     def simple_freq(self, frames=None):
@@ -162,19 +176,62 @@ class Audio:
         self.__starts_stops=onsetFrames*hop_length*2
         return onsetFrames*hop_length*2
 
+    def return_valuse_librosa_picks(self):
+        hop_length = 512
+        array = self.__starts_stops/(hop_length*2)
+        return array - array[0]
 
     def splits_audio_and_return_notes(self):
-        print(self.__frames)
+
         print("test")
-        format_audio = pyaudio.paInt16
         array = np.frombuffer(self.__frames, dtype=np.uint8)
-        #print(len(array))
 
+        self.__total_len_librosa=int(len(array)/1024)
 
+        notes_with_time = []
+        times = self.return_valuse_librosa_picks()
         for i in range(0, (len(self.__starts_stops)-1)):
             note_test = array[self.__starts_stops[i]:self.__starts_stops[i+1]]
-            #print(note_test.tobytes())
-            print(self.get_name_note(self.recoginize_freq(b''.join(note_test),int(len(note_test)/2)))) 
+            note_name = self.get_name_note(self.recoginize_freq(b''.join(note_test),int(len(note_test)/2)))
+            notes_with_time.append([note_name,times[i]])
+
+        print(notes_with_time)
+        self.__notes_with_time = notes_with_time
+        return self.__notes_with_time
+
+
+
+    def quantization_notes(self):
+        array_of_len_notes = []
+        len_dict = {'full': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, 'sixteenth': 0.25}
+
+        for key, value in len_dict.items():
+            array_of_len_notes.append([key,int((self.__tempo*value)/self.__metrum[0])])
+
+        self.__notes_with_time.append(["last",self.__total_len_librosa])
+        print(array_of_len_notes)
+        output = []
+
+        for i in range(len(self.__notes_with_time)-1):
+            name=''.join([a for a in self.__notes_with_time[i][0] if not a.isdigit()])
+            timeline=self.__notes_with_time[i][1]
+            duration=self.__notes_with_time[i+1][1]-self.__notes_with_time[i][1]
+            for q in range(len(array_of_len_notes)-1):
+                if array_of_len_notes[q][1]>=duration and array_of_len_notes[q+1][1]<duration:
+                    if ((array_of_len_notes[q][1]-array_of_len_notes[q+1][1])/2)+array_of_len_notes[q+1][1]>=duration:
+                        duration=array_of_len_notes[q+1][0]
+                        break
+                    else:
+                        duration=array_of_len_notes[q][0]
+                        break
+                elif array_of_len_notes[q][1]<=duration:
+                    duration = array_of_len_notes[q][0]
+                    break
+            output.append([name,duration,timeline])
+            duration=0
+        self.__notes_with_time.pop()
+        print(output)
+        return output
 
     def get_peaks_in_s(self, frames=None):
         hop_length=512
@@ -239,7 +296,7 @@ class Audio:
                 break
         p.terminate()
         # print("end")
-        #print("frex:"+str(thefreq))
+        print("freq: "+str(thefreq))
         self.__freq = thefreq
         return thefreq
 

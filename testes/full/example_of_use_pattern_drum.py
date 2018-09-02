@@ -10,9 +10,10 @@ print(path)
 #os.makedirs(path)
 
 pattern = Pattern(['kick','snare'])
-#pattern.prepere_date()
+pattern.prepere_date()
 pattern.read_pattern()
-#pattern.record()
+pattern.save_date()
+#pattern.play_midi()
 
 pattern.__del__()
 
