@@ -75,11 +75,11 @@ class Pattern:
             print(array)
             stri = ''
             for a in array:
-                stri =stri + a[0]
+                stri = stri + a[0]
             print(self.most_frequent(stri))
-            #TODO Find error bellow
-            #print(self.__audios[i].recoginize_freq(self.__audios[i].get_frames()))
-            #print(self.__audios[i].get_name_note(self.__audios[i].get_the_freq()))
+            # TODO Find error bellow
+            # print(self.__audios[i].recoginize_freq(self.__audios[i].get_frames()))
+            # print(self.__audios[i].get_name_note(self.__audios[i].get_the_freq()))
 
         print("record pattern")
         self.__pattern_audio.record_sample(time_of_recording=patten_len)
@@ -116,7 +116,7 @@ class Pattern:
         self.__notes_and_timings = self.__pattern_audio.quantization_notes()
         pass
 
-    def preper_midi(self,metrum,tempo):
+    def preper_midi(self, metrum, tempo):
         self.__midi_maker.set_tempo(self.__pattern_audio.get_tempo())
         for name, value, time in self.__notes_and_timings:
             # TODO znajowanie tych czestotliwosci
@@ -125,9 +125,9 @@ class Pattern:
             elif name[0] == self.__audios[1].get_name_note()[0]:
                 name = 'snare'
             self.__midi_maker.put_note(name_note=name, rest_time=0, length=value)
-        self.__midi_maker.add_cymbals(4,True)
+        self.__midi_maker.add_cymbals(4, True)
 
-    def save_date(self,path):
+    def save_date(self, path):
         print(path)
 
         self.__midi_maker.save_midi(path)
