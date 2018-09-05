@@ -250,7 +250,7 @@ class Audio:
         return self.__tempo
 
     def get_tempo(self):
-        if self.__tempo is not None:
+        if self.__tempo is None:
             return -1
         else:
             return self.__tempo

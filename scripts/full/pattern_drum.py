@@ -23,6 +23,11 @@ class Pattern:
         pass
 
     def load_date(self, path_to_save):
+        """
+        out of data function
+        :param path_to_save:
+        :return:
+        """
         rc = Audio()
         res.make_folder(path_to_save + "audio\\records\\from_top\\")
         res.make_folder(path_to_save + "audio\\records\\from_down\\")
@@ -58,6 +63,27 @@ class Pattern:
         sm.load_audio(path_to_save + "audio\\records\\fraze.wav")
         sm.fft_signature()
         sm.save_signature(path_to_save + "signatures\\records\\fraze.jpg")
+
+    def preper_test_run(self,path,pattern_path):
+        for i in range(len(self.__audios)):
+            print(self.__audios[i].get_name())
+            self.__audios[i].open_audio(path[i])
+            print(numpy.around(self.__audios[i].get_peaks(), 3))
+            print(numpy.around(self.__audios[i].get_peaks_in_s(), 3))
+            array = self.__audios[i].splits_audio_and_return_notes()
+            print(array)
+            stri = ''
+            for a in array:
+                stri = stri + a[0]
+            print(self.most_frequent(stri))
+        self.__pattern_audio.open_audio(pattern_path)
+        print(self.__pattern_audio.detect_tempo())
+        print(numpy.around(self.__pattern_audio.get_peaks(), 3))
+        print(len(self.__pattern_audio.get_frames()))
+        print(numpy.around(self.__pattern_audio.get_peaks_in_s(), 3))
+        self.__pattern_audio.splits_audio_and_return_notes()
+        self.__notes_and_timings = self.__pattern_audio.quantization_notes()
+
 
     @staticmethod
     def most_frequent(text):
@@ -128,7 +154,6 @@ class Pattern:
         self.__midi_maker.add_cymbals(4, True)
 
     def save_date(self, path):
-        print(path)
 
         self.__midi_maker.save_midi(path)
 

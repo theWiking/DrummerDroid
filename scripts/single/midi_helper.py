@@ -35,7 +35,7 @@ class MidiHelper:
     __duration_last_note = 0
 
     def __init__(self):
-        self.__midi = MIDIFile(numTracks=1, adjust_origin=False, file_format=0, deinterleave=True)
+        self.__midi = MIDIFile(numTracks=1, file_format=1)
         # self.__midi.addChannelPressure(tracknum=0, channel=self.__channel, time=0)
         self.__midi.addProgramChange(tracknum=0, channel=self.__channel, program=115, time=0)
         pass
@@ -60,8 +60,8 @@ class MidiHelper:
         pass
 
     def set_tempo(self,tempo):
-        #self.__midi.addTempo(time=0, track=0, tempo=int(tempo))
-        pass
+        print(int(tempo))
+        self.__midi.addTempo(time=0, track=0, tempo=int(tempo))
 
     def put_note(self, name_note, rest_time, length, volume='mf'):
         self.__duration_last_note = self.__len_dict[length]
@@ -76,7 +76,8 @@ class MidiHelper:
         pass
 
     def save_midi(self, name):
-        print('save')
+
         with open(name + ".mid", 'wb') as output_file:
+            print('save in '+ name)
             self.__midi.writeFile(output_file)
         pass

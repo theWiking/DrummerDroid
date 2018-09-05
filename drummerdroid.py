@@ -6,6 +6,15 @@ import argparse
 from resource import __version__
 from scripts.full.pattern_drum import Pattern
 
+import sys, os
+
+def test_run(kwargs):
+    pattern = Pattern(['kick', 'snare'])
+    pattern.preper_test_run([os.path.abspath('')+'/date/audio/G.wav',os.path.abspath('')+'/date/audio/D.wav'],
+                            os.path.abspath('') + '/date/audio/patt.wav')
+    pattern.preper_midi(0,0)
+    pattern.save_date(os.path.abspath('')+'/output2')
+
 
 def patter_drum(kwargs):
     pattern = Pattern(['kick', 'snare'])
@@ -23,7 +32,12 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--metrum', default=4, type=int, choices=[3, 4, 6, 8],
                         help='there is only options 3,4,6,8')
     parser.add_argument('-a','--actens',type=bool)
+    parser.add_argument('--test',default=False, action="store_true")
 
     args = parser.parse_args()
-    print(vars(args))
-    patter_drum(vars(args))
+
+    if vars(args)["test"]:
+        test_run(vars(args))
+    else:
+        print(vars(args))
+        patter_drum(vars(args))
