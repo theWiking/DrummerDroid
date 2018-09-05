@@ -4,14 +4,15 @@ from copy import deepcopy as dcp
 
 import mido
 
+
 class MidiPlayer:
 
     def __init__(self):
         pass
 
     def load_file_midi(self, path):
-        self.__name=path
-        #mido.get_output_names()
+        self.__name = path
+        # mido.get_output_names()
 
         pass
 
@@ -20,8 +21,6 @@ class MidiPlayer:
 
     def play(self):
         pass
-
-
 
 
 class MidiHelper:
@@ -52,14 +51,31 @@ class MidiHelper:
     def get_dict_duration(self):
         return self.__len_dict
 
-    def add_cymbals(self,metrum,actents):
-        full_len = dcp(self.__current_time)
-        print(full_len)
+    def add_cymbals(self, cymbals_bit, actents):
+        if cymbals_bit is not 0:
+            full_len = dcp(self.__current_time)
+            self.__current_time = 0
+            full_len = full_len * cymbals_bit / 4
+            if cymbals_bit == 4:
+                key = 'quarter'
+            elif cymbals_bit == 8:
+                key = 'eighth'
+            elif cymbals_bit == 16:
+                key = 'sixteenth'
+            else:
+                key = 'half'
+            for a, note in enumerate(range(int(full_len))):
+                if a % cymbals_bit == 0 and actents:
+                    self.put_note(name_note='hi_open', rest_time=0, length=key, volume="ff")
+                else:
+                    self.put_note(name_note='hi_close', rest_time=0, length=key, volume='pp')
+        else:
+            pass
 
     def make_midi(self):
         pass
 
-    def set_tempo(self,tempo):
+    def set_tempo(self, tempo):
         print(int(tempo))
         self.__midi.addTempo(time=0, track=0, tempo=int(tempo))
 
@@ -78,6 +94,6 @@ class MidiHelper:
     def save_midi(self, name):
 
         with open(name + ".mid", 'wb') as output_file:
-            print('save in '+ name)
+            print('save in ' + name)
             self.__midi.writeFile(output_file)
         pass

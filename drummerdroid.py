@@ -8,19 +8,20 @@ from scripts.full.pattern_drum import Pattern
 
 import sys, os
 
+
 def test_run(kwargs):
     pattern = Pattern(['kick', 'snare'])
-    pattern.preper_test_run([os.path.abspath('')+'/date/audio/G.wav',os.path.abspath('')+'/date/audio/D.wav'],
+    pattern.preper_test_run([os.path.abspath('') + '/date/audio/D.wav', os.path.abspath('') + '/date/audio/G.wav'],
                             os.path.abspath('') + '/date/audio/patt.wav')
-    pattern.preper_midi(0,0)
-    pattern.save_date(os.path.abspath('')+'/output2')
+    pattern.preper_midi(cymbals_bit=16, actents=False)
+    pattern.save_date(os.path.abspath('') + '/output2')
 
 
 def patter_drum(kwargs):
     pattern = Pattern(['kick', 'snare'])
     pattern.prepere_date(sample_len=kwargs['time_samples'], patten_len=kwargs['length_pattern'])
     pattern.read_pattern()
-    pattern.preper_midi(1,1)
+    pattern.preper_midi(1, 1)
     pattern.save_date(kwargs['path_save_midi'])
 
 
@@ -31,8 +32,8 @@ if __name__ == '__main__':
     parser.add_argument('-lp', '--length-pattern', type=int, default=30)
     parser.add_argument('-m', '--metrum', default=4, type=int, choices=[3, 4, 6, 8],
                         help='there is only options 3,4,6,8')
-    parser.add_argument('-a','--actens',type=bool)
-    parser.add_argument('--test',default=False, action="store_true")
+    parser.add_argument('-a', '--actens', type=bool)
+    parser.add_argument('--test', default=False, action="store_true")
 
     args = parser.parse_args()
 

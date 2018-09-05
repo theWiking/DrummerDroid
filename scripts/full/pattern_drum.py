@@ -64,7 +64,7 @@ class Pattern:
         sm.fft_signature()
         sm.save_signature(path_to_save + "signatures\\records\\fraze.jpg")
 
-    def preper_test_run(self,path,pattern_path):
+    def preper_test_run(self, path, pattern_path):
         for i in range(len(self.__audios)):
             print(self.__audios[i].get_name())
             self.__audios[i].open_audio(path[i])
@@ -83,7 +83,6 @@ class Pattern:
         print(numpy.around(self.__pattern_audio.get_peaks_in_s(), 3))
         self.__pattern_audio.splits_audio_and_return_notes()
         self.__notes_and_timings = self.__pattern_audio.quantization_notes()
-
 
     @staticmethod
     def most_frequent(text):
@@ -142,7 +141,7 @@ class Pattern:
         self.__notes_and_timings = self.__pattern_audio.quantization_notes()
         pass
 
-    def preper_midi(self, metrum, tempo):
+    def preper_midi(self, cymbals_bit, actents):
         self.__midi_maker.set_tempo(self.__pattern_audio.get_tempo())
         for name, value, time in self.__notes_and_timings:
             # TODO znajowanie tych czestotliwosci
@@ -151,7 +150,7 @@ class Pattern:
             elif name[0] == self.__audios[1].get_name_note()[0]:
                 name = 'snare'
             self.__midi_maker.put_note(name_note=name, rest_time=0, length=value)
-        self.__midi_maker.add_cymbals(4, True)
+        self.__midi_maker.add_cymbals(cymbals_bit, actents)
 
     def save_date(self, path):
 
