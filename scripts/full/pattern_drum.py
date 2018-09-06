@@ -1,7 +1,7 @@
 import numpy
 
 from scripts.single.audio_helper import Audio
-from scripts.single import signatur_maker
+#from scripts.single import signatur_maker
 from scripts.single.midi_helper import MidiHelper, MidiPlayer
 import resource as res
 

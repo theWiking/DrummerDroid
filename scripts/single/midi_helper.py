@@ -2,7 +2,7 @@ from midiutil import MIDIFile
 import sys
 from copy import deepcopy as dcp
 
-import mido
+#import mido
 
 
 class MidiPlayer:

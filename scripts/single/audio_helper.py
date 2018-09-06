@@ -1,6 +1,5 @@
 import math
 
-import pyaudio
 import wave
 from array import array
 import pyaudio
@@ -35,8 +34,7 @@ class Audio:
         self.__name = name
         self.__array_notes = None
         self.__audio = None
-        self.__framerate = 44100
-        self.__name = None
+        self.__framerate = 44100    
         self.__frames = None
         self.__time = None
         self.__npframe = None

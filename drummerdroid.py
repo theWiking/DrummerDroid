@@ -13,7 +13,7 @@ def test_run(kwargs):
     pattern = Pattern(['kick', 'snare'])
     pattern.preper_test_run([os.path.abspath('') + '/date/audio/D.wav', os.path.abspath('') + '/date/audio/G.wav'],
                             os.path.abspath('') + '/date/audio/patt.wav')
-    pattern.preper_midi(cymbals_bit=16, actents=False)
+    pattern.preper_midi(cymbals_bit=0, actents=True)
     pattern.save_date(os.path.abspath('') + '/output2')
 
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('-ts', '--time-samples', type=int, default=10)
     parser.add_argument('-ps', '--path-save-midi')
     parser.add_argument('-lp', '--length-pattern', type=int, default=30)
-    parser.add_argument('-m', '--metrum', default=4, type=int, choices=[3, 4, 6, 8],
+    parser.add_argument('-m', '--metrum', default=4, type=int, choices=[0, 4, 8, 16],
                         help='there is only options 3,4,6,8')
     parser.add_argument('-a', '--actens', type=bool)
     parser.add_argument('--test', default=False, action="store_true")
