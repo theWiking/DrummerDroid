@@ -62,7 +62,6 @@ class Audio:
             freq = self.__freq
         if freq != None:
             self.__name_note = librosa.hz_to_note(freq)
-            print(self.__name_note)
             return (''.join([i for i in self.__name_note if not i.isdigit()]))
 
     def get_name(self):
@@ -94,7 +93,10 @@ class Audio:
     def get_frames(self):
         return self.__frames
 
-    def record_sample(self, time_of_recording=15, rate=44100, chunk=1024, channels=1):
+    def record_sample(self, time_of_recording=15):
+        rate = 44100
+        chunk = 1024
+        channels = 1
         self.__framerate = rate
         format_audio = pyaudio.paInt16
         # instantiate the pyaudio
@@ -122,7 +124,6 @@ class Audio:
 
         self.__nframes = len(frames) / self.__sampwidth
         audio.terminate()
-        print(self.recoginize_freq(self.__frames))
         return frames
 
     def get_the_freq(self):
@@ -170,7 +171,6 @@ class Audio:
             note_name = self.get_name_note(self.recoginize_freq(b''.join(note_test), int(len(note_test) / 2)))
             notes_with_time.append([note_name, times[i]])
         self.__notes_with_time = notes_with_time
-        print(notes_with_time)
         return self.__notes_with_time
 
     def quantization_notes(self):
@@ -181,7 +181,7 @@ class Audio:
             array_of_len_notes.append([key, int((self.__tempo * value) / self.__metrum[0])])
 
         self.__notes_with_time.append(["last", self.__total_len_librosa])
-        print(array_of_len_notes)
+
         output = []
 
         for i in range(len(self.__notes_with_time) - 1):
@@ -203,7 +203,6 @@ class Audio:
             output.append([name, duration, timeline])
             duration = 0
         self.__notes_with_time.pop()
-        print(output)
         return output
 
     def get_peaks_in_s(self, frames=None):

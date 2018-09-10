@@ -28,7 +28,7 @@ class Pattern:
             stri = ''
             for a in array:
                 stri = stri + a[0]
-            print(self.most_frequent(stri))
+            self.most_frequent(stri)
         self.__pattern_audio.open_audio(pattern_path)
         print(self.__pattern_audio.detect_tempo())
         print(numpy.around(self.__pattern_audio.get_peaks(), 3))
@@ -68,6 +68,7 @@ class Pattern:
         print(self.__pattern_audio.detect_tempo())
         print(numpy.around(self.__pattern_audio.get_peaks(), 3))
         print(len(self.__pattern_audio.get_frames()))
+
         print(numpy.around(self.__pattern_audio.get_peaks_in_s(), 3))
         self.__pattern_audio.splits_audio_and_return_notes()
         self.__notes_and_timings = self.__pattern_audio.quantization_notes()
@@ -76,7 +77,6 @@ class Pattern:
     def preper_midi(self, cymbals_bit, actents):
         self.__midi_maker.set_tempo(self.__pattern_audio.get_tempo())
         for name, value, time in self.__notes_and_timings:
-            # TODO znajowanie tych czestotliwosci
             if name[0] == self.__audios[0].get_name_note()[0]:
                 name = 'kick'
             elif name[0] == self.__audios[1].get_name_note()[0]:

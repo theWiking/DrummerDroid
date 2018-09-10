@@ -13,7 +13,7 @@ def test_run(kwargs):
     pattern = Pattern(['kick', 'snare'])
     pattern.preper_test_run([os.path.abspath('') + '/date/audio/D.wav', os.path.abspath('') + '/date/audio/G.wav'],
                             os.path.abspath('') + '/date/audio/patt.wav')
-    pattern.preper_midi(cymbals_bit=4, actents=True)
+    pattern.preper_midi(cymbals_bit=kwargs['metrum'], actents=True)
     pattern.save_date(os.path.abspath('') + '/output2')
 
 
