@@ -2,32 +2,10 @@ from midiutil import MIDIFile
 import sys
 from copy import deepcopy as dcp
 
-#import mido
-
-
-class MidiPlayer:
-
-    def __init__(self):
-        pass
-
-    def load_file_midi(self, path):
-        self.__name = path
-        # mido.get_output_names()
-
-        pass
-
-    def load_samples(self, name_note, path):
-        pass
-
-    def play(self):
-        pass
-
 
 class MidiHelper:
-    # drum channel
     __channel = 9
     __drum_dict = {'kick': 36, 'snare': 38, 'hi_close': 42, 'hi_open': 46}
-    # __note_dict =
     __len_dict = {'full': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, 'sixteenth': 0.25}
     __vel_dict = {'ppp': 16, 'pp': 33, 'p': 49, 'mp': 64, 'mf': 80, 'f': 96, 'ff': 112, 'fff': 127}
     __current_time = 0
@@ -35,7 +13,6 @@ class MidiHelper:
 
     def __init__(self):
         self.__midi = MIDIFile(numTracks=1, file_format=1)
-        # self.__midi.addChannelPressure(tracknum=0, channel=self.__channel, time=0)
         self.__midi.addProgramChange(tracknum=0, channel=self.__channel, program=115, time=0)
         pass
 
@@ -72,9 +49,6 @@ class MidiHelper:
         else:
             pass
 
-    def make_midi(self):
-        pass
-
     def set_tempo(self, tempo):
         print(int(tempo))
         self.__midi.addTempo(time=0, track=0, tempo=int(tempo))
@@ -89,11 +63,9 @@ class MidiHelper:
                             duration=self.__len_dict[length],
                             volume=self.__vel_dict[volume])
         self.__current_time = self.__current_time + self.__duration_last_note + rest_time
-        pass
 
     def save_midi(self, name):
 
         with open(name + ".mid", 'wb') as output_file:
             print('save in ' + name)
             self.__midi.writeFile(output_file)
-        pass

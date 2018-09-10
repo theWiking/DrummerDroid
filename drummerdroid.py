@@ -6,14 +6,14 @@ import argparse
 from resource import __version__
 from scripts.full.pattern_drum import Pattern
 
-import sys, os
+import os
 
 
 def test_run(kwargs):
     pattern = Pattern(['kick', 'snare'])
     pattern.preper_test_run([os.path.abspath('') + '/date/audio/D.wav', os.path.abspath('') + '/date/audio/G.wav'],
                             os.path.abspath('') + '/date/audio/patt.wav')
-    pattern.preper_midi(cymbals_bit=0, actents=True)
+    pattern.preper_midi(cymbals_bit=4, actents=True)
     pattern.save_date(os.path.abspath('') + '/output2')
 
 
@@ -21,7 +21,7 @@ def patter_drum(kwargs):
     pattern = Pattern(['kick', 'snare'])
     pattern.prepere_date(sample_len=kwargs['time_samples'], patten_len=kwargs['length_pattern'])
     pattern.read_pattern()
-    pattern.preper_midi(1, 1)
+    pattern.preper_midi(kwargs['metrum'], kwargs['actens'])
     pattern.save_date(kwargs['path_save_midi'])
 
 

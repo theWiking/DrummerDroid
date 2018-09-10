@@ -12,8 +12,7 @@ def make_folder(path, del_if_exist=False):
 
 
 def remove_folder(path):
-    # check if folder exists
-    # remove if exists
+
     import shutil
     if os.path.exists(path):
         shutil.rmtree(path)
