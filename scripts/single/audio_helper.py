@@ -101,7 +101,8 @@ class Audio:
         format_audio = pyaudio.paInt16
         # instantiate the pyaudio
         audio = pyaudio.PyAudio()
-        stream = audio.open(format=format_audio, channels=channels, rate=rate, input=True, frames_per_buffer=chunk)
+        stream = audio.open(format=format_audio, channels=channels,
+                            rate=rate, input=True, frames_per_buffer=chunk)
         # Start recording
         frames = []
         while True:
