@@ -90,7 +90,7 @@ class Audio:
         wave_file.writeframes(b''.join(frames))  # append frames recorded to file
         wave_file.close()
 
-    def get_frames(self):
+    def get_framłes(self):
         return self.__frames
 
     def record_sample(self, time_of_recording=15):

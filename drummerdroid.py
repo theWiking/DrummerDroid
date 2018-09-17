@@ -32,7 +32,7 @@ if __name__ == '__main__':
     parser.add_argument('-lp', '--length-pattern', type=int, default=30)
     parser.add_argument('-m', '--metrum', default=4, type=int, choices=[0, 4, 8, 16],
                         help='there is only options 3,4,6,8')
-    parser.add_argument('-a', '--actens', type=bool)
+    parser.add_argument('-a', '--actens', default=False, action="store_true")
     parser.add_argument('--test', default=False, action="store_true")
 
     args = parser.parse_args()
