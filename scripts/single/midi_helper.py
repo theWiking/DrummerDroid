@@ -39,7 +39,7 @@ class MidiHelper:
                 key = 'eighth'
             elif cymbals_bit == 16:
                 key = 'sixteenth'
-            else:
+            elif cymbals_bit == 2:
                 key = 'half'
             for a, note in enumerate(range(int(full_len))):
                 if a % cymbals_bit == 0 and actents:

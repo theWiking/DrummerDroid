@@ -130,13 +130,12 @@ class Audio:
     def get_the_freq(self):
         return self.__freq
 
-    def remove_to_close(self, times, tempo, spaceModificer=20):
-        arrayIndex = []
+    def remove_to_close(self, times, tempo, space_mod=20):
+        array_index = []
         for i in range(0, len(times) - 1):
-            # tempo/20 precysion of slice ->20 bigger make more space
-            if times[i + 1] - times[i] < (tempo / spaceModificer):
-                arrayIndex.append(i + 1)
-        return np.delete(times, arrayIndex)
+            if times[i + 1] - times[i] < (tempo / space_mod):
+                array_index.append(i + 1)
+        return np.delete(times, array_index)
 
     def bytes2int(self, str):
         return int(str.encode('hex'), 16)
@@ -236,28 +235,20 @@ class Audio:
         seconds = self.__nframes / self.__framerate
         if chunk == None:
             chunk = round(self.__framerate * seconds)
-        # use a Blackman window
         window = np.blackman(chunk)
-        # open stream
         p = pyaudio.PyAudio()
         data = self.__frames[0:chunk * self.__sampwidth]
         i = self.__sampwidth
         while len(data) == chunk * self.__sampwidth:
-            # unpack the data and times by the hamming window
             indata = np.array(wave.struct.unpack("%dh" % (len(data) / self.__sampwidth), data)) * window
-            # Take the fft and square each value
             fftData = abs(np.fft.rfft(indata)) ** 2
-            # find the maximum
             which = fftData[1:].argmax() + 1
-            # use quadratic interpolation around the max
             if which != len(fftData) - 1:
                 y0, y1, y2 = np.log(fftData[which - 1:which + 2:])
                 x1 = (y2 - y0) * .5 / (2 * y1 - y2 - y0)
-                # find the frequency and output it
                 thefreq = (which + x1) * self.__framerate / chunk
             else:
                 thefreq = which * self.__framerate / chunk
-            # read some more data
             data = self.__frames[chunk * (i - 1):chunk * (i)]
             i -= 1
             if i == 1:

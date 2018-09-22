@@ -42,7 +42,7 @@ class Pattern:
         frequencies = [(c, text.count(c)) for c in set(text)]
         return max(frequencies, key=lambda x: x[1])[0]
 
-    def prepere_date(self, is_save=None, sample_len=10, patten_len=30):
+    def prepere_date(self, sample_len=10, patten_len=30):
 
         for i in range(len(self.__audios)):
             print(self.__audios[i].get_name())
