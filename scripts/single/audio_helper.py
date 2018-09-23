@@ -57,7 +57,6 @@ class Audio:
         pass
 
     def get_name_note(self, freq=None):
-
         if freq == None:
             freq = self.__freq
         if freq != None:
@@ -90,7 +89,7 @@ class Audio:
         wave_file.writeframes(b''.join(frames))  # append frames recorded to file
         wave_file.close()
 
-    def get_framłes(self):
+    def get_frames(self):
         return self.__frames
 
     def record_sample(self, time_of_recording=15):
@@ -99,7 +98,6 @@ class Audio:
         channels = 1
         self.__framerate = rate
         format_audio = pyaudio.paInt16
-        # instantiate the pyaudio
         audio = pyaudio.PyAudio()
         stream = audio.open(format=format_audio, channels=channels,
                             rate=rate, input=True, frames_per_buffer=chunk)
@@ -176,14 +174,11 @@ class Audio:
     def quantization_notes(self):
         array_of_len_notes = []
         len_dict = {'full': 4, 'half': 2, 'quarter': 1, 'eighth': 0.5, 'sixteenth': 0.25}
-
         for key, value in len_dict.items():
             array_of_len_notes.append([key, int((self.__tempo * value) / self.__metrum[0])])
 
         self.__notes_with_time.append(["last", self.__total_len_librosa])
-
         output = []
-
         for i in range(len(self.__notes_with_time) - 1):
             name = ''.join([a for a in self.__notes_with_time[i][0] if not a.isdigit()])
             timeline = self.__notes_with_time[i][1]
@@ -231,7 +226,6 @@ class Audio:
         thefreq = 0
         if frames is not None:
             self.__frames = frames
-
         seconds = self.__nframes / self.__framerate
         if chunk == None:
             chunk = round(self.__framerate * seconds)

@@ -42,8 +42,7 @@ class Pattern:
         frequencies = [(c, text.count(c)) for c in set(text)]
         return max(frequencies, key=lambda x: x[1])[0]
 
-    def prepere_date(self, sample_len=10, patten_len=30):
-
+    def prepere_data(self, sample_len=10, patten_len=30):
         for i in range(len(self.__audios)):
             print(self.__audios[i].get_name())
             self.__audios[i].record_sample(time_of_recording=sample_len)
@@ -68,11 +67,9 @@ class Pattern:
         print(self.__pattern_audio.detect_tempo())
         print(numpy.around(self.__pattern_audio.get_peaks(), 3))
         print(len(self.__pattern_audio.get_frames()))
-
         print(numpy.around(self.__pattern_audio.get_peaks_in_s(), 3))
         self.__pattern_audio.splits_audio_and_return_notes()
         self.__notes_and_timings = self.__pattern_audio.quantization_notes()
-        pass
 
     def preper_midi(self, cymbals_bit, actents):
         self.__midi_maker.set_tempo(self.__pattern_audio.get_tempo())

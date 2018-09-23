@@ -2,11 +2,11 @@ from scripts.full.pattern_drum import Pattern
 import resource as res
 
 print("start")
-path = res.ROOT_DIR + "\\date\\"
+path = res.ROOT_DIR + "\\data\\"
 print(path)
 
 pattern = Pattern(['kick', 'snare'])
-pattern.prepere_date()
+pattern.prepere_data()
 pattern.read_pattern()
 pattern.save_date()
 

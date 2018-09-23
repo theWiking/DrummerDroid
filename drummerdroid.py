@@ -11,15 +11,15 @@ import os
 
 def test_run(kwargs):
     pattern = Pattern(['kick', 'snare'])
-    pattern.preper_test_run([os.path.abspath('') + '/date/audio/D.wav', os.path.abspath('') + '/date/audio/G.wav'],
-                            os.path.abspath('') + '/date/audio/patt.wav')
+    pattern.preper_test_run([os.path.abspath('') + '/data/audio/D.wav', os.path.abspath('') + '/data/audio/G.wav'],
+                            os.path.abspath('') + '/data/audio/patt.wav')
     pattern.preper_midi(cymbals_bit=kwargs['metrum'], actents=kwargs["actens"])
     pattern.save_date(os.path.abspath('') + '/output2')
 
 
 def patter_drum(kwargs):
     pattern = Pattern(['kick', 'snare'])
-    pattern.prepere_date(sample_len=kwargs['time_samples'], patten_len=kwargs['length_pattern'])
+    pattern.prepere_data(sample_len=kwargs['time_samples'], patten_len=kwargs['length_pattern'])
     pattern.read_pattern()
     pattern.preper_midi(kwargs['metrum'], kwargs['actens'])
     pattern.save_date(kwargs['path_save_midi'])

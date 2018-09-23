@@ -55,7 +55,6 @@ class MidiHelper:
 
     def put_note(self, name_note, rest_time, length, volume='mf'):
         self.__duration_last_note = self.__len_dict[length]
-
         self.__midi.addNote(track=0,
                             channel=self.__channel,
                             pitch=self.__drum_dict[name_note],
@@ -65,7 +64,6 @@ class MidiHelper:
         self.__current_time = self.__current_time + self.__duration_last_note + rest_time
 
     def save_midi(self, name):
-
         with open(name + ".mid", 'wb') as output_file:
             print('save in ' + name)
             self.__midi.writeFile(output_file)
